@@ -2,7 +2,7 @@
 
 Projektbeschrieb Spital
 
-##Um was geht es im Projekt?
+## Um was geht es im Projekt?
 
 In dem Projekt geht es um ein Spital, welches Patienten enthaltet. Jeder Patient hat ein Doktor und ein Gesundheitsstatus.
 Jeder Doktor kann den Gesundheitsstatus von seinen Patienten in der Datenbank verändern. 
@@ -27,7 +27,7 @@ Jeder Doktor sollte all seine Patienten sehen und Bearbeiten. Jeder Patient kann
 |06|    Als Patient möchte ich, eine Anfrage erstellen, um meinen Doktor zu wechseln.|
 |07|    Als Doktor möchte ich, alle Anfragen sehen, um das Gespräch zu suchen.|
 
-##Technologien
+## Technologien
 Zum Programmieren verwende ich Visual Studio und Resharper.
 Ich brauche Docker, auf welcher eine MsSql Datenbank läuft. 
 Um die Daten in C# Code umzuwandeln brauche ich das Entity Framework.
