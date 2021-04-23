@@ -19,13 +19,13 @@ Jeder Doktor sollte all seine Patienten sehen und Bearbeiten. Jeder Patient kann
 
 |Nr.|    User Stories|
 |----|:------------:|
-|01|    Als Administrator möchte ich alle User sehen, damit ich sie bei beliebig manipulieren kann.|
-|02|    Als Kunde möchte ich meinen Gesundheitsstatus sehen.|
-|03|    Als Doktor möchte ich all meine Patienten sehen, damit ich eine übersicht habe. |
-|04|    Als Doktor und Administrator möchte ich den Gesundheitsstatus von meinen Patienten ändern können.|
-|05|    Als Doktor und Administration möchte ich einen neuen Patient hinzufügen.|
-|06|    Als Kunde möchte ich eine Anfrage erstellen, um meinen Doktor zu wechseln|
-|07|    Als Doktor möchte ich alle Anfragen sehen, um sie zu akzeptieren|
+|01|    Als Administrator möchte ich, alle User sehen, damit ich sie bei beliebig manipulieren kann.|
+|02|    Als Patient möchte ich, meinen Gesundheitsstatus sehen, um Änderungen festzustellen.|
+|03|    Als Doktor möchte ich, alle meine Patienten sehen, damit ich eine übersicht habe. |
+|04|    Als Doktor und Administrator möchte ich, den Gesundheitsstatus von meinen Patienten ändern können, damit die Daten stehts aktuell sind.|
+|05|    Als Doktor und Administration möchte ich, einen neuen Patient hinzufügen, damit die Patienten stehts aktuell sind.|
+|06|    Als Patient möchte ich, eine Anfrage erstellen, um meinen Doktor zu wechseln.|
+|07|    Als Doktor möchte ich, alle Anfragen sehen, um das Gespräch zu suchen.|
 
 ##Technologien
 Zum Programmieren verwende ich Visual Studio und Resharper.
