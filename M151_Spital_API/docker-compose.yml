@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  m151_spital_api:
+    image: ${DOCKER_REGISTRY-}m151spitalapi
+    build:
+      context: .
+      dockerfile: M151_Spital_API/Dockerfile
+    depends_on:
+        - db
+    networks:
+        - db
+  db:
+    container_name: mssql_server
+    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    ports:
+        - "1435:1435"
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    networks:
+        - db
+networks:
+  db:
+    driver: bridge
