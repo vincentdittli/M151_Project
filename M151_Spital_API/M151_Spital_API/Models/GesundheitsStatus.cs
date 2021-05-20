@@ -1,6 +1,6 @@
 ﻿namespace M151_Spital_API.Models
 {
-    public class Healthstatus
+    public class GesundheitsStatus
     {
         public int Id { get; set; }
 
