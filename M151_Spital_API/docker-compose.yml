@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  m151_spital_api:
-    image: ${DOCKER_REGISTRY-}m151spitalapi
+  dockermssql:
+    image: ${DOCKER_REGISTRY-}dockermssql
     build:
       context: .
-      dockerfile: M151_Spital_API/Dockerfile
+      dockerfile: DockerMsSql/Dockerfile
     depends_on:
         - db
     networks:

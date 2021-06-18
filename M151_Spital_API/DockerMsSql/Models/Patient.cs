@@ -1,4 +1,4 @@
-﻿namespace M151_Spital_API.Models
+﻿namespace M151_Spital.Models
 {
     public class Patient : Person
     {
