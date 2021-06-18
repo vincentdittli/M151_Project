@@ -10,30 +10,9 @@
         {
             _context = context;
             context.Database.Migrate();
-
-            SeedTodos();
-
+            
             context.SaveChanges();
         }
-
-        private static void SeedTodos()
-        {
-            if (!_context.Todos.Any())
-            {
-                var todos = new Todo[]
-                {
-                    new Todo
-                    {
-                        Title = "Einkauf Elektronik"
-                    },
-                    new Todo
-                    {
-                        Title = "Einkauf Lebensmittel"
-                    }
-                };
-
-                _context.Todos.AddRange(todos);
-            }
-        }
+        
     }
 }
