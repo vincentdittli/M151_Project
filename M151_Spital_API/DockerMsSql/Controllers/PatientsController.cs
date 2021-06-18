@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using M151_Spital.Data;
-using M151_Spital.Models;
-
-namespace M151_Spital.Controllers
+﻿namespace M151_Spital.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using M151_Spital.Data;
+    using M151_Spital.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Route("api/[controller]")]
     [ApiController]
     public class PatientsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DataContext Context;
 
         public PatientsController(DataContext context)
         {
-            _context = context;
+            this.Context = context;
         }
 
         // GET: api/Patients
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Patient>>> GetPatienten()
         {
-            return await _context.Patienten.ToListAsync();
+            return await this.Context.Patienten.ToListAsync();
         }
 
         // GET: api/Patients/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Patient>> GetPatient(int id)
         {
-            var patient = await _context.Patienten.FindAsync(id);
+            Patient patient = await this.Context.Patienten.FindAsync(id);
 
             if (patient == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return patient;
@@ -49,28 +47,26 @@ namespace M151_Spital.Controllers
         {
             if (id != patient.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            _context.Entry(patient).State = EntityState.Modified;
+            this.Context.Entry(patient).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PatientExists(id))
+                if (!this.PatientExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Patients
@@ -78,31 +74,32 @@ namespace M151_Spital.Controllers
         [HttpPost]
         public async Task<ActionResult<Patient>> PostPatient(Patient patient)
         {
-            _context.Patienten.Add(patient);
-            await _context.SaveChangesAsync();
+            this.Context.Patienten.Add(patient);
+            await this.Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPatient", new { id = patient.Id }, patient);
+            return this.CreatedAtAction("GetPatient", new {id = patient.Id}, patient);
         }
 
         // DELETE: api/Patients/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePatient(int id)
         {
-            var patient = await _context.Patienten.FindAsync(id);
+            Patient patient = await this.Context.Patienten.FindAsync(id);
+
             if (patient == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.Patienten.Remove(patient);
-            await _context.SaveChangesAsync();
+            this.Context.Patienten.Remove(patient);
+            await this.Context.SaveChangesAsync();
 
-            return NoContent();
+            return this.NoContent();
         }
 
         private bool PatientExists(int id)
         {
-            return _context.Patienten.Any(e => e.Id == id);
+            return this.Context.Patienten.Any(e => e.Id == id);
         }
     }
 }

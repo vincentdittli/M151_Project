@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using M151_Spital.Data;
-using M151_Spital.Models;
-
-namespace M151_Spital.Controllers
+﻿namespace M151_Spital.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using M151_Spital.Data;
+    using M151_Spital.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Route("api/[controller]")]
     [ApiController]
     public class AnfragesController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DataContext Context;
 
         public AnfragesController(DataContext context)
         {
-            _context = context;
+            this.Context = context;
         }
 
         // GET: api/Anfrages
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Anfrage>>> GetAnfragen()
         {
-            return await _context.Anfragen.ToListAsync();
+            return await this.Context.Anfragen.ToListAsync();
         }
 
         // GET: api/Anfrages/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Anfrage>> GetAnfrage(int id)
         {
-            var anfrage = await _context.Anfragen.FindAsync(id);
+            Anfrage anfrage = await this.Context.Anfragen.FindAsync(id);
 
             if (anfrage == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return anfrage;
@@ -49,28 +47,26 @@ namespace M151_Spital.Controllers
         {
             if (id != anfrage.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            _context.Entry(anfrage).State = EntityState.Modified;
+            this.Context.Entry(anfrage).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AnfrageExists(id))
+                if (!this.AnfrageExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Anfrages
@@ -78,31 +74,32 @@ namespace M151_Spital.Controllers
         [HttpPost]
         public async Task<ActionResult<Anfrage>> PostAnfrage(Anfrage anfrage)
         {
-            _context.Anfragen.Add(anfrage);
-            await _context.SaveChangesAsync();
+            this.Context.Anfragen.Add(anfrage);
+            await this.Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAnfrage", new { id = anfrage.Id }, anfrage);
+            return this.CreatedAtAction("GetAnfrage", new {id = anfrage.Id}, anfrage);
         }
 
         // DELETE: api/Anfrages/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAnfrage(int id)
         {
-            var anfrage = await _context.Anfragen.FindAsync(id);
+            Anfrage anfrage = await this.Context.Anfragen.FindAsync(id);
+
             if (anfrage == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.Anfragen.Remove(anfrage);
-            await _context.SaveChangesAsync();
+            this.Context.Anfragen.Remove(anfrage);
+            await this.Context.SaveChangesAsync();
 
-            return NoContent();
+            return this.NoContent();
         }
 
         private bool AnfrageExists(int id)
         {
-            return _context.Anfragen.Any(e => e.Id == id);
+            return this.Context.Anfragen.Any(e => e.Id == id);
         }
     }
 }

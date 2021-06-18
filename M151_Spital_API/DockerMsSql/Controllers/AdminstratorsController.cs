@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using M151_Spital.Data;
-using M151_Spital.Models;
-
-namespace M151_Spital.Controllers
+﻿namespace M151_Spital.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using M151_Spital.Data;
+    using M151_Spital.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Route("api/[controller]")]
     [ApiController]
     public class AdminstratorsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DataContext Context;
 
         public AdminstratorsController(DataContext context)
         {
-            _context = context;
+            this.Context = context;
         }
 
         // GET: api/Adminstrators
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Adminstrator>>> GetAdminstratoren()
         {
-            return await _context.Adminstratoren.ToListAsync();
+            return await this.Context.Adminstratoren.ToListAsync();
         }
 
         // GET: api/Adminstrators/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Adminstrator>> GetAdminstrator(int id)
         {
-            var adminstrator = await _context.Adminstratoren.FindAsync(id);
+            Adminstrator adminstrator = await this.Context.Adminstratoren.FindAsync(id);
 
             if (adminstrator == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return adminstrator;
@@ -49,28 +47,26 @@ namespace M151_Spital.Controllers
         {
             if (id != adminstrator.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            _context.Entry(adminstrator).State = EntityState.Modified;
+            this.Context.Entry(adminstrator).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdminstratorExists(id))
+                if (!this.AdminstratorExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Adminstrators
@@ -78,31 +74,32 @@ namespace M151_Spital.Controllers
         [HttpPost]
         public async Task<ActionResult<Adminstrator>> PostAdminstrator(Adminstrator adminstrator)
         {
-            _context.Adminstratoren.Add(adminstrator);
-            await _context.SaveChangesAsync();
+            this.Context.Adminstratoren.Add(adminstrator);
+            await this.Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdminstrator", new { id = adminstrator.Id }, adminstrator);
+            return this.CreatedAtAction("GetAdminstrator", new {id = adminstrator.Id}, adminstrator);
         }
 
         // DELETE: api/Adminstrators/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAdminstrator(int id)
         {
-            var adminstrator = await _context.Adminstratoren.FindAsync(id);
+            Adminstrator adminstrator = await this.Context.Adminstratoren.FindAsync(id);
+
             if (adminstrator == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.Adminstratoren.Remove(adminstrator);
-            await _context.SaveChangesAsync();
+            this.Context.Adminstratoren.Remove(adminstrator);
+            await this.Context.SaveChangesAsync();
 
-            return NoContent();
+            return this.NoContent();
         }
 
         private bool AdminstratorExists(int id)
         {
-            return _context.Adminstratoren.Any(e => e.Id == id);
+            return this.Context.Adminstratoren.Any(e => e.Id == id);
         }
     }
 }

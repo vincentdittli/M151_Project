@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using M151_Spital.Data;
-using M151_Spital.Models;
-
-namespace M151_Spital.Controllers
+﻿namespace M151_Spital.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using M151_Spital.Data;
+    using M151_Spital.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Route("api/[controller]")]
     [ApiController]
     public class GesundheitsStatusController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DataContext Context;
 
         public GesundheitsStatusController(DataContext context)
         {
-            _context = context;
+            this.Context = context;
         }
 
         // GET: api/GesundheitsStatus
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GesundheitsStatus>>> GetGesundheitsStaten()
         {
-            return await _context.GesundheitsStaten.ToListAsync();
+            return await this.Context.GesundheitsStaten.ToListAsync();
         }
 
         // GET: api/GesundheitsStatus/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GesundheitsStatus>> GetGesundheitsStatus(int id)
         {
-            var gesundheitsStatus = await _context.GesundheitsStaten.FindAsync(id);
+            GesundheitsStatus gesundheitsStatus = await this.Context.GesundheitsStaten.FindAsync(id);
 
             if (gesundheitsStatus == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return gesundheitsStatus;
@@ -49,28 +47,26 @@ namespace M151_Spital.Controllers
         {
             if (id != gesundheitsStatus.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            _context.Entry(gesundheitsStatus).State = EntityState.Modified;
+            this.Context.Entry(gesundheitsStatus).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GesundheitsStatusExists(id))
+                if (!this.GesundheitsStatusExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/GesundheitsStatus
@@ -78,31 +74,32 @@ namespace M151_Spital.Controllers
         [HttpPost]
         public async Task<ActionResult<GesundheitsStatus>> PostGesundheitsStatus(GesundheitsStatus gesundheitsStatus)
         {
-            _context.GesundheitsStaten.Add(gesundheitsStatus);
-            await _context.SaveChangesAsync();
+            this.Context.GesundheitsStaten.Add(gesundheitsStatus);
+            await this.Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGesundheitsStatus", new { id = gesundheitsStatus.Id }, gesundheitsStatus);
+            return this.CreatedAtAction("GetGesundheitsStatus", new {id = gesundheitsStatus.Id}, gesundheitsStatus);
         }
 
         // DELETE: api/GesundheitsStatus/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGesundheitsStatus(int id)
         {
-            var gesundheitsStatus = await _context.GesundheitsStaten.FindAsync(id);
+            GesundheitsStatus gesundheitsStatus = await this.Context.GesundheitsStaten.FindAsync(id);
+
             if (gesundheitsStatus == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.GesundheitsStaten.Remove(gesundheitsStatus);
-            await _context.SaveChangesAsync();
+            this.Context.GesundheitsStaten.Remove(gesundheitsStatus);
+            await this.Context.SaveChangesAsync();
 
-            return NoContent();
+            return this.NoContent();
         }
 
         private bool GesundheitsStatusExists(int id)
         {
-            return _context.GesundheitsStaten.Any(e => e.Id == id);
+            return this.Context.GesundheitsStaten.Any(e => e.Id == id);
         }
     }
 }

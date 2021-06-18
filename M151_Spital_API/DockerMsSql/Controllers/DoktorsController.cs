@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using M151_Spital.Data;
-using M151_Spital.Models;
-
-namespace M151_Spital.Controllers
+﻿namespace M151_Spital.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using M151_Spital.Data;
+    using M151_Spital.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Route("api/[controller]")]
     [ApiController]
     public class DoktorsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DataContext Context;
 
         public DoktorsController(DataContext context)
         {
-            _context = context;
+            this.Context = context;
         }
 
         // GET: api/Doktors
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Doktor>>> GetDoktoren()
         {
-            return await _context.Doktoren.ToListAsync();
+            return await this.Context.Doktoren.ToListAsync();
         }
 
         // GET: api/Doktors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Doktor>> GetDoktor(int id)
         {
-            var doktor = await _context.Doktoren.FindAsync(id);
+            Doktor doktor = await this.Context.Doktoren.FindAsync(id);
 
             if (doktor == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return doktor;
@@ -49,28 +47,26 @@ namespace M151_Spital.Controllers
         {
             if (id != doktor.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            _context.Entry(doktor).State = EntityState.Modified;
+            this.Context.Entry(doktor).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DoktorExists(id))
+                if (!this.DoktorExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/Doktors
@@ -78,31 +74,32 @@ namespace M151_Spital.Controllers
         [HttpPost]
         public async Task<ActionResult<Doktor>> PostDoktor(Doktor doktor)
         {
-            _context.Doktoren.Add(doktor);
-            await _context.SaveChangesAsync();
+            this.Context.Doktoren.Add(doktor);
+            await this.Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetDoktor", new { id = doktor.Id }, doktor);
+            return this.CreatedAtAction("GetDoktor", new {id = doktor.Id}, doktor);
         }
 
         // DELETE: api/Doktors/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDoktor(int id)
         {
-            var doktor = await _context.Doktoren.FindAsync(id);
+            Doktor doktor = await this.Context.Doktoren.FindAsync(id);
+
             if (doktor == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.Doktoren.Remove(doktor);
-            await _context.SaveChangesAsync();
+            this.Context.Doktoren.Remove(doktor);
+            await this.Context.SaveChangesAsync();
 
-            return NoContent();
+            return this.NoContent();
         }
 
         private bool DoktorExists(int id)
         {
-            return _context.Doktoren.Any(e => e.Id == id);
+            return this.Context.Doktoren.Any(e => e.Id == id);
         }
     }
 }

@@ -1,42 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using M151_Spital.Data;
-using M151_Spital.Models;
-
-namespace M151_Spital.Controllers
+﻿namespace M151_Spital.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using M151_Spital.Data;
+    using M151_Spital.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+
     [Route("api/[controller]")]
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly DataContext Context;
 
         public PeopleController(DataContext context)
         {
-            _context = context;
+            this.Context = context;
         }
 
         // GET: api/People
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPersonen()
         {
-            return await _context.Personen.ToListAsync();
+            return await this.Context.Personen.ToListAsync();
         }
 
         // GET: api/People/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(int id)
         {
-            var person = await _context.Personen.FindAsync(id);
+            Person person = await this.Context.Personen.FindAsync(id);
 
             if (person == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             return person;
@@ -49,28 +47,26 @@ namespace M151_Spital.Controllers
         {
             if (id != person.Id)
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            _context.Entry(person).State = EntityState.Modified;
+            this.Context.Entry(person).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PersonExists(id))
+                if (!this.PersonExists(id))
                 {
-                    return NotFound();
+                    return this.NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
-            return NoContent();
+            return this.NoContent();
         }
 
         // POST: api/People
@@ -78,31 +74,32 @@ namespace M151_Spital.Controllers
         [HttpPost]
         public async Task<ActionResult<Person>> PostPerson(Person person)
         {
-            _context.Personen.Add(person);
-            await _context.SaveChangesAsync();
+            this.Context.Personen.Add(person);
+            await this.Context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+            return this.CreatedAtAction("GetPerson", new {id = person.Id}, person);
         }
 
         // DELETE: api/People/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(int id)
         {
-            var person = await _context.Personen.FindAsync(id);
+            Person person = await this.Context.Personen.FindAsync(id);
+
             if (person == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            _context.Personen.Remove(person);
-            await _context.SaveChangesAsync();
+            this.Context.Personen.Remove(person);
+            await this.Context.SaveChangesAsync();
 
-            return NoContent();
+            return this.NoContent();
         }
 
         private bool PersonExists(int id)
         {
-            return _context.Personen.Any(e => e.Id == id);
+            return this.Context.Personen.Any(e => e.Id == id);
         }
     }
 }
