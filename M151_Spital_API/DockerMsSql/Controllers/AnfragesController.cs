@@ -40,35 +40,6 @@
             return anfrage;
         }
 
-        // PUT: api/Anfrages/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAnfrage(int id, Anfrage anfrage)
-        {
-            if (id != anfrage.Id)
-            {
-                return this.BadRequest();
-            }
-
-            this.Context.Entry(anfrage).State = EntityState.Modified;
-
-            try
-            {
-                await this.Context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!this.AnfrageExists(id))
-                {
-                    return this.NotFound();
-                }
-
-                throw;
-            }
-
-            return this.NoContent();
-        }
-
         // POST: api/Anfrages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

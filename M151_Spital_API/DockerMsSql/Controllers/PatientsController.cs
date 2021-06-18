@@ -40,6 +40,24 @@
             return patient;
         }
 
+        // GET: api/Patients/5
+        [HttpGet("{fk_Doktor}")]
+        public async Task<ActionResult<List<Patient>>> GetPatientsOf(int fk_Doktor)
+        {
+            List<Patient> patient =  this.Context.Patienten.Where(p=>p.DoktorId == fk_Doktor).ToList();
+
+            return patient;
+        }
+
+        // GET: api/Patients/5
+        [HttpGet()]
+        public async Task<ActionResult<List<Patient>>> GetAllPatients()
+        {
+            List<Patient> patient = this.Context.Patienten.ToList();
+
+            return patient;
+        }
+
         // PUT: api/Patients/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -53,7 +71,7 @@
             this.Context.Entry(patient).State = EntityState.Modified;
 
             try
-            {
+            {   
                 await this.Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
